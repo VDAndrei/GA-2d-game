@@ -29,11 +29,11 @@ public class PlayerMovementScript : MonoBehaviour
         // Check for sprint input and adjust speed
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            movementSpeed = 1.5f; // Sprint speed
+            movementSpeed = 6.0f; // Sprint speed
         }
         else
         {
-            movementSpeed = 1.0f; // Normal speed
+            movementSpeed = 5.0f; // Normal speed
         }
 
         // Get raw input for both horizontal and vertical axes

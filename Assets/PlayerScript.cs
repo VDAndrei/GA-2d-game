@@ -16,8 +16,6 @@ public class PlayerMovementScript : MonoBehaviour
     private bool isInHeavyAttackCooldown = false; // Flag to check if in heavy attack cooldown
     private bool canAttack = true; // Flag to determine if attack can be performed
 
-    public bool inTransition = false;
-
     // Array to store the duration of each attack animation
     private float[] animationDurations = { 0.433f, 0.433f, 0.433f };
 
@@ -39,10 +37,8 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         // Get raw input for both horizontal and vertical axes
-        if (!inTransition)
-        {
-            movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        }
+        movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+
         // Set the animator's speed parameter based on movement
         float speed = movement.magnitude * movementSpeed;
         animator.SetFloat("Speed", speed);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
-    public float damage;
+    [SerializeField] public float damage;
     // Start is called before the first frame update
     void Start()
     {

@@ -12339,7 +12339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shiftAmount: 32
   shiftDirection: {x: 1, y: 0}
-  transitionDuration: 1
+  transitionDuration: 300
   Player: {fileID: 1626330021}
 --- !u!61 &1460911736
 BoxCollider2D:

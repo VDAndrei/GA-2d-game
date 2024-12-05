@@ -5,11 +5,12 @@ using UnityEngine;
 public class EnemyCircleDetection : MonoBehaviour
 {
     [Header("Detection Settings")]
-    public float detectionRadius = 5f; // The radius of the detection circle
+    public float detectionRadius = 5f; // The radius of the detection circle for player and breadcrumbs
     public LayerMask playerLayer;      // Layer for detecting the player
+    public LayerMask breadcrumbLayer;  // Layer for detecting breadcrumbs
 
     [Header("Behavior Settings")]
-    public float moveSpeed = 2f; // Speed at which the enemy moves towards the player
+    public float moveSpeed = 2f; // Speed at which the enemy moves towards the target
 
     private Transform player;   // Reference to the player's transform
     private bool playerInRange; // Whether the player is within the detection radius
@@ -21,6 +22,10 @@ public class EnemyCircleDetection : MonoBehaviour
         if (playerInRange)
         {
             FollowPlayer();
+        }
+        else
+        {
+            FollowNearestBreadcrumb();
         }
     }
 
@@ -48,6 +53,34 @@ public class EnemyCircleDetection : MonoBehaviour
         // Move the enemy towards the player
         Vector2 direction = (player.position - transform.position).normalized;
         transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+    }
+
+    void FollowNearestBreadcrumb()
+    {
+        // Find all breadcrumbs within the detection radius
+        Collider2D[] breadcrumbsInRange = Physics2D.OverlapCircleAll(transform.position, detectionRadius, breadcrumbLayer);
+
+        if (breadcrumbsInRange.Length == 0) return; // No breadcrumbs in range
+
+        // Find the nearest breadcrumb
+        Transform nearestBreadcrumb = null;
+        float shortestDistance = Mathf.Infinity;
+
+        foreach (Collider2D breadcrumb in breadcrumbsInRange)
+        {
+            float distance = Vector2.Distance(transform.position, breadcrumb.transform.position);
+            if (distance < shortestDistance)
+            {
+                shortestDistance = distance;
+                nearestBreadcrumb = breadcrumb.transform;
+            }
+        }
+
+        if (nearestBreadcrumb == null) return;
+
+        // Move towards the nearest breadcrumb
+        Vector2 direction = (nearestBreadcrumb.position - transform.position).normalized;
+        transform.position = Vector2.MoveTowards(transform.position, nearestBreadcrumb.position, moveSpeed * Time.deltaTime);
     }
 
     private void OnDrawGizmosSelected()
